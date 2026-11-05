@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8fb">
+  <title>Worklog — Team Time Tracker</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a href="/" class="brand" aria-label="Worklog home">
+        <span class="brand-mark" aria-hidden="true">W<span>.</span></span>
+        <span class="brand-name">worklog</span>
+      </a>
+      <span class="topbar-caption">Team time tracking</span>
+      <span class="local-note"><span class="status-dot" aria-hidden="true"></span> Data saved locally</span>
+    </header>
+
+    <main class="page">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">OVERVIEW</p>
+          <h1>Keep track of the work.</h1>
+          <p class="muted">A simple way to record tasks, track hours, and review your team's time.</p>
+        </div>
+      </div>
+
+      <div id="notice" class="notice" role="alert" hidden></div>
+
+      <div class="workspace">
+        <aside class="panel team-panel" aria-label="Employees">
+          <div class="panel-heading team-heading">
+            <div><h2>Employees</h2><p class="muted small">Choose a person to track time</p></div>
+            <span id="employee-count" class="count">0</span>
+          </div>
+          <div id="employees" class="employees" aria-label="Employee list"></div>
+          <form id="add-employee-form" class="add-employee-form">
+            <label for="employee-name">Add employee</label>
+            <div class="add-row">
+              <input id="employee-name" name="name" placeholder="Full name" maxlength="80" autocomplete="off" required>
+              <button class="square-button" type="submit" aria-label="Add employee" title="Add employee">+</button>
+            </div>
+          </form>
+        </aside>
+
+        <div class="content-column">
+          <section class="panel timer-panel" aria-labelledby="timer-heading">
+            <div class="timer-top">
+              <div>
+                <p class="eyebrow">TIME TRACKER</p>
+                <h2 id="timer-heading">Select an employee</h2>
+              </div>
+              <span id="timer-status" class="state-pill">Not running</span>
+            </div>
+            <div class="timer-grid">
+              <div class="task-area">
+                <label for="task-description">What are they working on?</label>
+                <input id="task-description" maxlength="240" placeholder="E.g. Weekly project review" disabled>
+                <p id="task-help" class="field-help">Add an employee to start tracking time.</p>
+              </div>
+              <div class="clock-area">
+                <p class="eyebrow">CURRENT SESSION</p>
+                <output id="timer-clock" class="clock" aria-live="off">00:00:00</output>
+              </div>
+            </div>
+            <div class="timer-bottom">
+              <button id="toggle-timer" class="primary-button" type="button" disabled>Start timer</button>
+              <span id="timer-message" class="muted small">One active timer per employee.</span>
+            </div>
+          </section>
+
+          <section class="panel report-panel" aria-labelledby="report-heading">
+            <div class="report-top">
+              <div>
+                <p class="eyebrow">REPORTS</p>
+                <h2 id="report-heading">Time summary</h2>
+                <p class="muted small">Entries and totals within the selected UTC dates.</p>
+              </div>
+              <form id="report-form" class="date-filters">
+                <div class="date-field"><label for="date-from">From</label><input type="date" id="date-from" required></div>
+                <div class="date-field"><label for="date-to">To</label><input type="date" id="date-to" required></div>
+                <button class="outline-button" type="submit">Apply</button>
+              </form>
+            </div>
+
+            <div class="stats">
+              <div class="stat"><span>Tracked time</span><strong id="stat-time">0h 0m</strong></div>
+              <div class="stat"><span>Time entries</span><strong id="stat-entries">0</strong></div>
+              <div class="stat"><span>Active timers</span><strong id="stat-active">0</strong></div>
+            </div>
+
+            <div class="section-heading">
+              <h3>By employee</h3>
+              <span id="report-period" class="muted small"></span>
+            </div>
+            <div id="employee-totals" class="employee-totals"></div>
+
+            <div class="section-heading entries-heading">
+              <h3>Time entries</h3>
+              <span id="record-count" class="muted small">0 records</span>
+            </div>
+            <div class="table-scroller">
+              <table>
+                <thead><tr><th>Employee</th><th>Task</th><th>Started (UTC)</th><th>Ended (UTC)</th><th class="align-right">Time</th></tr></thead>
+                <tbody id="records"></tbody>
+              </table>
+            </div>
+            <div id="empty-report" class="empty-report" hidden>
+              <div class="empty-symbol" aria-hidden="true">◷</div>
+              <strong>No entries in this period</strong>
+              <p class="muted small">Start a timer, or choose a different date range.</p>
+            </div>
+            <p id="report-updated" class="report-footnote">Times are calculated in UTC.</p>
+          </section>
+        </div>
+      </div>
+      <footer>Worklog <span aria-hidden="true">·</span> Stored in SQLite on this device</footer>
+    </main>
+  </div>
+</body>
+</html>
